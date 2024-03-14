@@ -1,0 +1,150 @@
+{
+    "editor.cursorSurroundingLines": 8,
+    "editor.lineNumbers": "relative",
+    "editor.minimap.enabled": false,
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.leader": "<space>",
+    "vim.handleKeys": {
+        "<C-a>": false,
+        "<C-f>": false,
+    },
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "<C-n>"
+            ],
+            "commands": [
+                ":nohl"
+            ]
+        },
+    ],
+    "vim.normalModeKeyBindings": [
+        {
+            "before": [
+                "g",
+                "f"
+            ],
+            "commands": [
+                "<nop>"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f"
+            ],
+            "commands": [
+                "workbench.action.toggleSidebarVisibility"
+            ],
+            "silent": true
+        },
+        {
+            "before": [
+                "<leader>",
+                "u",
+            ],
+            "commands": [
+                "workbench.action.quickOpen",
+            ],
+            "silent": true
+        },
+        {
+            "before": [
+                "<leader>",
+                "q"
+            ],
+            "commands": [
+                "workbench.action.closeEditorsInGroup"
+            ],
+            "silent": true
+        },
+        {
+            "before": [
+                "<leader>",
+                "s"
+            ],
+            "commands": [
+                "workbench.action.splitEditor",
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "a"
+            ],
+            "commands": [
+                "bookmarks.toggle",
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "b",
+            ],
+            "commands": [
+                "bookmarks.listFromAllFiles",
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "c",
+                "a",
+                "b",
+            ],
+            "commands": [
+                "bookmarks.clearFromAllFiles",
+            ]
+        }
+    ],
+    "vim.visualModeKeyBindings": [
+        {
+            "before": [
+                "J"
+            ],
+            "commands": [
+                "editor.action.moveLinesDownAction",
+            ],
+            "silent": true
+        },
+        {
+            "before": [
+                "K"
+            ],
+            "commands": [
+                "editor.action.moveLinesUpAction",
+            ],
+            "silent": true
+        }
+    ],
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "git.autofetch": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "diffEditor.renderSideBySide": false,
+    "[json]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "eslint.format.enable": true,
+    "workbench.activityBar.location": "top",
+    "workbench.sideBar.location": "right",
+    "editor.stickyScroll.enabled": true,
+    "explorer.confirmDelete": false,
+    "search.useParentIgnoreFiles": true,
+    "workbench.startupEditor": "none",
+    "workbench.editor.showTabs": "none",
+    "extensions.ignoreRecommendations": true,
+    "update.mode": "none",
+}
