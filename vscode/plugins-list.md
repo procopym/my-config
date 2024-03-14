@@ -1,0 +1,3 @@
+- [Bookmarks](https://marketplace.visualstudio.com/items?itemName=alefragnani.Bookmarks)
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Vim](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim)
