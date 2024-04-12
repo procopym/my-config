@@ -12,7 +12,7 @@
         "<C-a>": false,
         "<C-f>": false,
     },
-    "vim.normalModeKeyBindingsNonRecursive": [
+    "vim.normalModeKeyBindings": [
         {
             "before": [
                 "<C-n>"
@@ -21,8 +21,6 @@
                 ":nohl"
             ]
         },
-    ],
-    "vim.normalModeKeyBindings": [
         {
             "before": [
                 "g",
@@ -35,22 +33,11 @@
         {
             "before": [
                 "<leader>",
-                "f"
-            ],
-            "commands": [
-                "workbench.action.toggleSidebarVisibility"
-            ],
-            "silent": true
-        },
-        {
-            "before": [
-                "<leader>",
                 "u",
             ],
             "commands": [
                 "workbench.action.quickOpen",
             ],
-            "silent": true
         },
         {
             "before": [
@@ -60,7 +47,6 @@
             "commands": [
                 "workbench.action.closeEditorsInGroup"
             ],
-            "silent": true
         },
         {
             "before": [
@@ -99,6 +85,22 @@
             "commands": [
                 "bookmarks.clearFromAllFiles",
             ]
+        },
+        {
+            "before": [
+                "L"
+            ],
+            "commands": [
+                "workbench.action.focusRightGroup",
+            ],
+        },
+        {
+            "before": [
+                "H",
+            ],
+            "commands": [
+                "workbench.action.focusLeftGroup",
+            ],
         }
     ],
     "vim.visualModeKeyBindings": [
@@ -109,7 +111,6 @@
             "commands": [
                 "editor.action.moveLinesDownAction",
             ],
-            "silent": true
         },
         {
             "before": [
@@ -118,7 +119,6 @@
             "commands": [
                 "editor.action.moveLinesUpAction",
             ],
-            "silent": true
         }
     ],
     "extensions.experimental.affinity": {
@@ -130,13 +130,14 @@
     "git.autofetch": true,
     "git.enableSmartCommit": true,
     "git.confirmSync": false,
-    "diffEditor.renderSideBySide": false,
+    "diffEditor.renderSideBySide": true,
     "[json]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+        "editor.defaultFormatter": "vscode.json-language-features"
     },
     "[typescript]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
+    "typescript.preferences.importModuleSpecifier": "relative",
     "eslint.format.enable": true,
     "workbench.activityBar.location": "top",
     "workbench.sideBar.location": "right",
@@ -146,5 +147,6 @@
     "workbench.startupEditor": "none",
     "workbench.editor.showTabs": "none",
     "extensions.ignoreRecommendations": true,
-    "update.mode": "none",
+    "update.mode": "manual",
+    "workbench.colorTheme": "Default Dark Modern"
 }
