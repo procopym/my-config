@@ -319,11 +319,12 @@ require('lazy').setup({
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>u', builtin.find_files, { desc = '[S]earch [F]iles' })
-      vim.keymap.set('n', '<leader>j', builtin.live_grep, { desc = '[S]earch by [G]rep' })
-      vim.keymap.set('n', '<leader><leader>', builtin.current_buffer_fuzzy_find, { desc = 'Current buffer fzf' })
-      -- less used
-      vim.keymap.set('n', '<leader>kk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
+      vim.keymap.set('n', '<leader>u', builtin.find_files, { desc = '[F]iles [S]earch' })
+      vim.keymap.set('n', '<leader>j', builtin.live_grep, { desc = '[G]rep [S]earch' })
+      vim.keymap.set('n', '<leader>rs', builtin.resume, { desc = '[R]esume [S]earch' })
+      vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus [S]earch' })
+      vim.keymap.set('n', '<leader>ks', builtin.keymaps, { desc = '[K]eymaps [S]earch' })
+      vim.keymap.set('n', '<leader><leader>', builtin.current_buffer_fuzzy_find, { desc = '[C]urrent [B]uffer [S]earch' })
     end,
   },
 
@@ -539,6 +540,7 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
+        eslint = {},
         ts_ls = {
           init_options = {
             format = {
@@ -560,7 +562,6 @@ require('lazy').setup({
             end, { desc = '[O]ranize [I]mports' })
           end,
         },
-        eslint = {},
         --
 
         lua_ls = {
