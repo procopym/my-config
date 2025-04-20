@@ -108,15 +108,7 @@ vim.keymap.set('v', '<leader>fj', ":'<,'>!jq<CR>", { desc = 'Format JSON buffer 
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-
--- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
--- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
--- is not what someone will guess without a bit more experience.
---
--- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
--- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -125,29 +117,16 @@ vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
 vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
+-- Left, Right, Left, Right... Uu, ah, uu..
 --
 --  See `:help wincmd` for a list of all window commands
 vim.keymap.set('n', 'H', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', 'L', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<leader>s', '<C-w>v', { desc = "Vertical split" })
--- vim.keymap.set('n', 'J', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', 'K', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '<leader>q', ':close<CR>', { desc = "[C]lose [W]indow" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
-
--- Set opened directory as current directory
--- vim.api.nvim_create_autocmd("VimEnter", {
---   desc = "Set current working directory to the opened directory if it's the only argument",
---   group = vim.api.nvim_create_augroup("set-cwd-on-vimenter", { clear = true }),
---   callback = function()
---     -- TODO: fix when nested directory passed as input
---     if vim.fn.argc() >= 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
---       vim.cmd("cd " .. vim.fn.argv(0))
---     end
---   end,
--- })
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -544,7 +523,7 @@ require('lazy').setup({
         ts_ls = {
           init_options = {
             format = {
-              enable = false,
+              enable = true,
               insertSpaceAfterOpeningAndBeforeClosingEmptyBraces = false
             },
             preferences = {
@@ -738,7 +717,7 @@ require('lazy').setup({
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
           --  completions whenever it has completion options available.
-          -- ['<C-h'] = cmp.mapping.complete {},
+          ['<C-h>'] = cmp.mapping.complete {},
 
           -- Think of <c-l> as moving to the right of your snippet expansion.
           --  So if you have a snippet that's like:
@@ -748,16 +727,16 @@ require('lazy').setup({
           --
           -- <c-l> will move you to the right of each of the expansion locations.
           -- <c-h> is similar, except moving you backwards.
-          ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
-          end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            end
-          end, { 'i', 's' }),
+          -- ['<C-l>'] = cmp.mapping(function()
+          --   if luasnip.expand_or_locally_jumpable() then
+          --     luasnip.expand_or_jump()
+          --   end
+          -- end, { 'i', 's' }),
+          -- ['<C-h>'] = cmp.mapping(function()
+          --   if luasnip.locally_jumpable(-1) then
+          --     luasnip.jump(-1)
+          --   end
+          -- end, { 'i', 's' }),
 
           -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
