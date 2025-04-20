@@ -138,16 +138,16 @@ vim.keymap.set('n', '<leader>s', '<C-w>v', { desc = "Vertical split" })
 --  See `:help lua-guide-autocommands`
 
 -- Set opened directory as current directory
-vim.api.nvim_create_autocmd("VimEnter", {
-  desc = "Set current working directory to the opened directory if it's the only argument",
-  group = vim.api.nvim_create_augroup("set-cwd-on-vimenter", { clear = true }),
-  callback = function()
-    -- TODO: fix when nested directory passed as input
-    if vim.fn.argc() == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
-      vim.cmd("cd " .. vim.fn.argv(0))
-    end
-  end,
-})
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   desc = "Set current working directory to the opened directory if it's the only argument",
+--   group = vim.api.nvim_create_augroup("set-cwd-on-vimenter", { clear = true }),
+--   callback = function()
+--     -- TODO: fix when nested directory passed as input
+--     if vim.fn.argc() >= 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 then
+--       vim.cmd("cd " .. vim.fn.argv(0))
+--     end
+--   end,
+-- })
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
@@ -321,9 +321,9 @@ require('lazy').setup({
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>u', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>j', builtin.live_grep, { desc = '[S]earch by [G]rep' })
+      vim.keymap.set('n', '<leader><leader>', builtin.current_buffer_fuzzy_find, { desc = 'Current buffer fzf' })
       -- less used
       vim.keymap.set('n', '<leader>kk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader><leader>', builtin.current_buffer_fuzzy_find, { desc = 'Current buffer fzf' })
     end,
   },
 
@@ -497,14 +497,6 @@ require('lazy').setup({
         severity_sort = true,
         float = { border = 'rounded', source = 'if_many' },
         underline = { severity = vim.diagnostic.severity.ERROR },
-        signs = vim.g.have_nerd_font and {
-          text = {
-            [vim.diagnostic.severity.ERROR] = '󰅚 ',
-            [vim.diagnostic.severity.WARN] = '󰀪 ',
-            [vim.diagnostic.severity.INFO] = '󰋽 ',
-            [vim.diagnostic.severity.HINT] = '󰌶 ',
-          },
-        } or {},
         virtual_text = {
           source = 'if_many',
           spacing = 2,
@@ -533,7 +525,7 @@ require('lazy').setup({
       --  Add any additional override configuration in the following tables. Available keys are:
       --  - cmd (table): Override the default command used to start the server
       --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+      --  - cpabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
@@ -549,10 +541,24 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {
           init_options = {
+            format = {
+              enable = false,
+              insertSpaceAfterOpeningAndBeforeClosingEmptyBraces = false
+            },
             preferences = {
               importModuleSpecifierPreference = "relative",
-            },
+            }
           },
+          on_attach = function(client, bufnr)
+            vim.keymap.set('n', '<leader>oi', function()
+              return client:exec_cmd({
+                  command = "_typescript.organizeImports",
+                  arguments = { vim.api.nvim_buf_get_name(bufnr) }
+                },
+                { bufnr = bufnr }
+              )
+            end, { desc = '[O]ranize [I]mports' })
+          end,
         },
         eslint = {},
         --
@@ -590,7 +596,9 @@ require('lazy').setup({
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
-      require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+      require('mason-tool-installer').setup {
+        ensure_installed = ensure_installed
+      }
 
       require('mason-lspconfig').setup {
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
@@ -712,8 +720,8 @@ require('lazy').setup({
           ['<C-p>'] = cmp.mapping.select_prev_item(),
 
           -- Scroll the documentation window [b]ack / [f]orward
-          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
@@ -729,7 +737,7 @@ require('lazy').setup({
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
           --  completions whenever it has completion options available.
-          -- ['<C-Space'] = cmp.mapping.complete {},
+          -- ['<C-h'] = cmp.mapping.complete {},
 
           -- Think of <c-l> as moving to the right of your snippet expansion.
           --  So if you have a snippet that's like:
@@ -765,29 +773,6 @@ require('lazy').setup({
           { name = 'nvim_lsp_signature_help' },
         },
       }
-    end,
-  },
-  -- { 'bluz71/vim-moonfly-colors', name = 'moonfly', lazy = false, priority = 1000 },
-
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
-
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
 
@@ -844,8 +829,7 @@ require('lazy').setup({
         enable = true,
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
+        --  the list of additional_vim_regex_highlighting and disabled languages for indent. additional_vim_regex_highlighting = { 'ruby' },
       },
       indent = { enable = true, disable = { 'ruby' } },
     },
@@ -910,7 +894,7 @@ require('lazy').setup({
       local ui = require("harpoon.ui")
 
       vim.keymap.set("n", "<leader>a", mark.add_file, { desc = "Add current bufffer to quick menu" })
-      vim.keymap.set("n", "<leader>b", ui.toggle_quick_menu, { desc = "Toogle quick menu" })
+      vim.keymap.set("n", "<leader>h", ui.toggle_quick_menu, { desc = "Toogle quick menu" })
 
       vim.keymap.set("n", "<C-h>", function() ui.nav_file(1) end, { desc = "Go to 1st buffer in quick menu" })
       vim.keymap.set("n", "<C-t>", function() ui.nav_file(2) end, { desc = "Go to 2nd buffer in quick menu" })
