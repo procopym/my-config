@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-search_dir=(~/personal ~/thatc0py ~/Downloads ~/.config/nvim)
+search_dir=(
+    # Add serached directories
+)
 
 if [[ $# -eq 1 ]]; then
     selected=$1
